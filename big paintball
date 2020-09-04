@@ -3,7 +3,7 @@ local hintmsg = Instance.new("Hint", game.CoreGui)
 local attempt = tick()
 hintmsg.Text = "Initializing UI Library This Can Take Up To 30 Seconds"
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/zerovectors/framework/master/uwuware%20framework", true))()
-local version = "1"
+local version = "1.1"
 local uiname = "Big Paint Ball"
 local ui = { }
 local main = { }
@@ -1262,6 +1262,11 @@ do -- main
         workspace.Gravity = val
     end
     function main:AutomaticGuns()
+        if library.flags["allgunsauto"] then
+            notification:sendnotification("Automatic Guns Enabled")
+        else
+            notification:sendnotification("Automatic Guns Disabled")
+        end
         for i,v in next, getreg() do
             if type(v) == 'function' then
                 local upvals = debug.getupvalues(v)
@@ -1269,10 +1274,8 @@ do -- main
                     if type(b) == "table" then
                         if b then
                             if library.flags["allgunsauto"] then
-                                notification:sendnotification("Automatic Guns Enabled")
                                 b.automatic = true
                             else
-                                notification:sendnotification("Automatic Guns Disabled")
                                 b.automatic = main.gunstates.automatic.b
                             end
                         end
@@ -1282,6 +1285,11 @@ do -- main
         end
     end
     function main:RapidFire()
+        if library.flags["rapidfire"] then
+            notification:sendnotification("RapidFire Enabled")
+        else
+            notification:sendnotification("RapidFire Disabled")
+        end
         for i,v in next, getreg() do
             if type(v) == 'function' then
                 local upvals = debug.getupvalues(v)
@@ -1302,6 +1310,11 @@ do -- main
         end
     end
     function main:NoBulletDrop()
+        if library.flags["nobulletdrop"] then
+            notification:sendnotification("No Bullet Drop Enabled")
+        else
+            notification:sendnotification("No Bullet Drop Disabled")
+        end
         for i,v in next, getreg() do
             if type(v) == 'function' then
                 local upvals = debug.getupvalues(v)
@@ -1309,9 +1322,32 @@ do -- main
                     if type(b) == "table" then
                         if b then
                             if library.flags["nobulletdrop"] then
-                                b.velocity=1000000
+                                b.velocity = 1000000
                             else
                                 b.velocity = 200
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    function main:InstaKill()
+        if library.flags["instakill"] then
+            notification:sendnotification("Insta-Kill Enabled")
+        else
+            notification:sendnotification("Insta-Kill Disabled")
+        end
+        for i,v in next, getreg() do
+            if type(v) == 'function' then
+                local upvals = debug.getupvalues(v)
+                for a,b in next, upvals do
+                    if type(b) == "table" then
+                        if b then
+                            if library.flags["instakill"] then
+                                b.damage = math.huge
+                            else
+                                b.damage = 50
                             end
                         end
                     end
@@ -1550,6 +1586,10 @@ do -- ui
             ui.miscellaneous:AddToggle({text = "No Bullet Drop", flag = "nobulletdrop", callback = function(a)
                 library.flags["nobulletdrop"] = a
                 main:NoBulletDrop()
+            end})
+            ui.miscellaneous:AddToggle({text = "Insta-Kill", flag = "instakill", callback = function(a)
+                library.flags["instakill"] = a
+                main:InstaKill()
             end})
             ui.miscellaneous:AddToggle({text = "Kill All", flag = "autokill", callback = function()
                 main:KillAll()
