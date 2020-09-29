@@ -219,6 +219,7 @@ do -- main
             Settings.gunmods = library.flags.gunmods
             Settings.automatic = library.flags.allgunsauto
             Settings.rapidfire = library.flags.rapidfire
+            Settings.instakill = library.flags.instakill
         end
         do -- ui settings
             Settings.annoyshit = library.flags.annoyshit
@@ -249,8 +250,9 @@ do -- main
         do -- miscellaneous
             ui.miscellaneous.lowgravity:SetState(Settings.lowgrav)
             ui.miscellaneous.gunmods:SetState(Settings.gunmods)
-            --ui.miscellaneous.automatic:SetState(Settings.automatic)
+            ui.miscellaneous.allgunsauto:SetState(Settings.allgunsauto)
             ui.miscellaneous.rapidfire:SetState(Settings.rapidfire)
+            ui.miscellaneous.instakill:SetState(Settings.instakill)
         end
         do -- ui settings
             main.uisettings.annoyingstuff:SetState(Settings.annoyshit)
@@ -1303,11 +1305,13 @@ do -- main
     end)
     function main:GunMods()
         if library.flags.gunmods then
-            ui.miscellaneous.automatic:SetState(true)
             ui.miscellaneous.rapidfire:SetState(true)
+            ui.miscellaneous.instakill:SetState(true)
+            ui.miscellaneous.allgunsauto:SetState(true)
         else
-            ui.miscellaneous.automatic:SetState(false)
             ui.miscellaneous.rapidfire:SetState(false)
+            ui.miscellaneous.instakill:SetState(false)
+            ui.miscellaneous.allgunsauto:SetState(false)
         end
     end
     function main:AutomaticGuns()
@@ -1744,13 +1748,13 @@ do -- ui
                 library.flags.gunmods = a
                 main:GunMods()
             end})
-            ui.miscellaneous.automatic = ui.miscellaneous.gunmods:AddToggle({text = "All Guns Auto", flag = "allgunsauto", callback = function(a)
-                library.flags["allgunsauto"] = a
-                main:AutomaticGuns()
-            end})
             ui.miscellaneous.rapidfire = ui.miscellaneous.gunmods:AddToggle({text = "Rapid Fire", flag = "rapidfire", callback = function(a)
                 library.flags.rapidfire = a
                 main:RapidFire()
+            end})
+            ui.miscellaneous.allgunsauto = ui.miscellaneous.gunmods:AddToggle({text = "All Guns Auto", flag = "allgunsauto", callback = function(a)
+                library.flags["allgunsauto"] = a
+                main:AutomaticGuns()
             end})
             ui.miscellaneous.instakill = ui.miscellaneous.gunmods:AddToggle({text = "InstaKill", flag = "instakill", callback = function(a)
                 library.flags.instakill = a
